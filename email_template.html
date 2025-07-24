@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Novo Survey de Chatbot - {{client_company}}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+      }
+      .content {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 0 0 10px 10px;
+      }
+      .section {
+        background: white;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #3b82f6;
+      }
+      .section h3 {
+        color: #3b82f6;
+        margin-top: 0;
+      }
+      .highlight {
+        background: #eff6ff;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .score {
+        font-size: 24px;
+        font-weight: bold;
+        color: #3b82f6;
+      }
+      .budget {
+        font-size: 20px;
+        font-weight: bold;
+        color: #10b981;
+      }
+      .recommendation {
+        background: #fef3c7;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border-left: 3px solid #f59e0b;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+        color: #6b7280;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .badge-mature {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .badge-intermediate {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-developing {
+        background: #fed7aa;
+        color: #c2410c;
+      }
+      .badge-beginner {
+        background: #fecaca;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Agentes de Atendimento com IA</h1>
+      <p>Análise completa e proposta personalizada</p>
+    </div>
+
+    <div class="content">
+      <!-- Informações do Cliente -->
+      <div class="section">
+        <h3>👤 Informações do Cliente</h3>
+        <p><strong>Empresa:</strong> {{client_company}}</p>
+        <p><strong>Contato:</strong> {{client_name}}</p>
+        <p><strong>Email:</strong> {{client_email}}</p>
+        <p><strong>Telefone:</strong> {{client_phone}}</p>
+        <p><strong>Data/Hora:</strong> {{timestamp}}</p>
+      </div>
+
+      <!-- Análise de Maturidade -->
+      <div class="section">
+        <h3>📊 Análise de Maturidade</h3>
+        <div class="highlight">
+          <p>
+            <strong>Score Total:</strong>
+            <span class="score">{{score}} pontos</span>
+          </p>
+          <p>
+            <strong>Nível de Maturidade:</strong>
+            <span class="badge badge-{{maturity_level_color}}"
+              >{{maturity_level}}</span
+            >
+          </p>
+          <p>
+            <strong>Multiplicador de Esforço:</strong> {{maturity_multiplier}}x
+          </p>
+        </div>
+      </div>
+
+      <!-- Investimento Estimado -->
+      <div class="section">
+        <h3>💰 Investimento Estimado</h3>
+        <div class="highlight">
+          <p><strong>Orçamento Base:</strong> R$ {{base_budget}}</p>
+          <p>
+            <strong>Orçamento Ajustado:</strong>
+            <span class="budget">R$ {{final_budget}}</span>
+          </p>
+          <p><em>Ajuste baseado no nível de maturidade da empresa</em></p>
+        </div>
+      </div>
+
+      <!-- Recomendações -->
+      <div class="section">
+        <h3>🎯 Recomendações Específicas</h3>
+        {{#each recommendations}}
+        <div class="recommendation">{{this}}</div>
+        {{/each}}
+      </div>
+
+      <!-- Respostas Detalhadas -->
+      <div class="section">
+        <h3>📝 Respostas Detalhadas</h3>
+        <div
+          style="
+            font-family: monospace;
+            font-size: 12px;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+          "
+        >
+          <pre>{{responses_json}}</pre>
+        </div>
+      </div>
+
+      <!-- Próximos Passos -->
+      <div class="section">
+        <h3>🚀 Próximos Passos Sugeridos</h3>
+        <ol>
+          <li>
+            <strong>Análise Detalhada:</strong> Revisar respostas e contexto do
+            cliente
+          </li>
+          <li>
+            <strong>Proposta Personalizada:</strong> Criar proposta baseada na
+            maturidade e orçamento
+          </li>
+          <li>
+            <strong>Reunião Estratégica:</strong> Agendar call para alinhar
+            expectativas
+          </li>
+          <li>
+            <strong>Roadmap de Implementação:</strong> Definir cronograma
+            baseado na urgência
+          </li>
+        </ol>
+      </div>
+
+      <div class="footer">
+        <p>
+          <strong>Gerado automaticamente pelo Survey de Chatbot com IA</strong>
+        </p>
+        <p>📧 {{company_email}} | 🌐 {{company_website}}</p>
+      </div>
+    </div>
+  </body>
+</html>

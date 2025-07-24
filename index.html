@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Survey de Chatbot com IA - Planejamento personalizado para sua empresa"
+    />
+    <meta name="theme-color" content="#3B82F6" />
+    <title>Survey Chatbot IA</title>
+
+    <!-- Tailwind CSS via CDN confiável -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+    <!-- Lucide Icons via CDN confiável -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+      /* Estilos inline para garantir funcionamento */
+      .progress-bar {
+        transition: width 0.3s ease;
+      }
+      .option-card {
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .option-card:hover {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+      }
+      .option-card.selected {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+      }
+      .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      .icon-sm {
+        width: 1rem;
+        height: 1rem;
+      }
+      .icon-lg {
+        width: 2rem;
+        height: 2rem;
+      }
+      .icon-xl {
+        width: 3rem;
+        height: 3rem;
+      }
+      .icon-2xl {
+        width: 4rem;
+        height: 4rem;
+      }
+
+      /* Fallback para ícones caso Lucide não carregue */
+      .icon-fallback {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        background-color: currentColor;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+      }
+      .icon-target {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M22 12h-4l-3 9L9 3l-3 9H2'/%3E%3C/svg%3E");
+      }
+      .icon-message {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+      }
+      .icon-users {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='m22 21-2-2'/%3E%3Cpath d='M16 16l2 2'/%3E%3C/svg%3E");
+      }
+      .icon-dollar {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='12' y1='1' x2='12' y2='23'/%3E%3Cpath d='M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'/%3E%3C/svg%3E");
+      }
+      .icon-settings {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+      }
+      .icon-chart {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='m19 9-5 5-4-4-3 3'/%3E%3C/svg%3E");
+      }
+      .icon-chevron-left {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
+      }
+      .icon-chevron-right {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+      }
+      .icon-send {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m22 2-7 20-4-9-9-4 20-7z'/%3E%3Cpath d='M22 2 11 13'/%3E%3C/svg%3E");
+      }
+      .icon-check {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/%3E%3Cpath d='m9 11 3 3L22 4'/%3E%3C/svg%3E");
+      }
+
+      /* Melhorar compatibilidade mobile */
+      @media (max-width: 640px) {
+        .mobile-padding {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        .mobile-text {
+          font-size: 0.875rem;
+        }
+      }
+
+      /* Garantir que inputs funcionem no mobile */
+      input[type="radio"],
+      input[type="checkbox"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 2px solid #d1d5db;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+        position: relative;
+        cursor: pointer;
+      }
+
+      input[type="radio"]:checked,
+      input[type="checkbox"]:checked {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+      }
+
+      input[type="radio"]:checked::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0.4rem;
+        height: 0.4rem;
+        background-color: white;
+        border-radius: 50%;
+      }
+
+      input[type="checkbox"]:checked::after {
+        content: "✓";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto p-4 mobile-padding">
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <!-- Logo da Empresa -->
+        <div class="mb-4">
+          <img
+            src="https://via.placeholder.com/200x80/3B82F6/FFFFFF?text=SUA+LOGO"
+            alt="Logo da Empresa"
+            class="h-12 mx-auto mb-2"
+            id="companyLogo"
+          />
+          <h2 class="text-lg font-semibold text-gray-800" id="companyName">
+            Sua Empresa de IA
+          </h2>
+          <p class="text-xs text-gray-600 mobile-text" id="companyContact">
+            Rua das Flores, 123 • São Paulo, SP • (11) 99999-9999
+          </p>
+        </div>
+
+        <div
+          class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3"
+        >
+          <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+          Planejamento do Seu Chatbot com IA
+        </h1>
+        <p class="text-gray-600 mb-4 mobile-text">
+          Vamos desenhar juntos a solução perfeita para sua empresa!
+        </p>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+          <div
+            class="bg-blue-600 h-2 rounded-full progress-bar"
+            id="progressBar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <p class="text-xs text-gray-500" id="progressText">Seção 1 de 6</p>
+      </div>
+
+      <!-- Client Info Form -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-4" id="clientInfoForm">
+        <h3 class="text-base font-semibold text-gray-800 mb-3">
+          Suas Informações
+        </h3>
+        <div class="space-y-3">
+          <input
+            type="text"
+            placeholder="Nome da Empresa"
+            id="clientCompany"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Seu Nome"
+            id="clientName"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            id="clientEmail"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <input
+            type="tel"
+            placeholder="Telefone"
+            id="clientPhone"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+        </div>
+      </div>
+
+      <!-- Survey Sections -->
+      <div id="surveyContainer">
+        <!-- Sections will be dynamically generated here -->
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between items-center mt-6">
+        <button
+          id="prevButton"
+          class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          disabled
+        >
+          <i data-lucide="chevron-left" class="icon-sm"></i>
+          Anterior
+        </button>
+
+        <div class="text-xs text-gray-500" id="sectionCounter">1 / 6</div>
+
+        <button
+          id="nextButton"
+          class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+        >
+          Próximo
+          <i data-lucide="chevron-right" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <!-- Encouragement Message -->
+      <div class="mt-6 p-3 bg-blue-50 rounded-lg text-center">
+        <p class="text-blue-800 text-xs">
+          💡 <strong>Lembre-se:</strong> Não existe resposta "errada"! Cada
+          empresa é única e merece uma solução personalizada.
+        </p>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div
+      id="successModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"
+    >
+      <div class="bg-white rounded-lg p-6 max-w-sm w-full text-center">
+        <div
+          class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <i data-lucide="check" class="w-6 h-6 text-white"></i>
+        </div>
+        <h2 class="text-xl font-bold text-gray-800 mb-3">
+          Obrigado pelo seu tempo!
+        </h2>
+        <p class="text-gray-600 mb-4 text-sm">
+          Suas informações foram enviadas com sucesso e serão cuidadosamente
+          avaliadas pela nossa equipe especializada.
+        </p>
+        <p class="text-gray-600 mb-4 text-sm">
+          Em até 24 horas, entraremos em contato com uma proposta personalizada
+          para transformar seu atendimento com IA.
+        </p>
+        <div class="bg-blue-50 p-3 rounded-lg mb-4">
+          <p class="text-blue-800 text-xs">
+            🚀 <strong>Próximos passos:</strong><br />
+            • Análise detalhada das suas necessidades<br />
+            • Criação de proposta personalizada<br />
+            • Agendamento de reunião estratégica
+          </p>
+        </div>
+        <button
+          id="closeModal"
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+        >
+          Entendi
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Configurações da empresa
+      const companyConfig = {
+        logo: "https://via.placeholder.com/200x80/3B82F6/FFFFFF?text=SUA+LOGO",
+        name: "Sua Empresa de IA",
+        contact: "Rua das Flores, 123 • São Paulo, SP • (11) 99999-9999",
+        email: "kelsen@datavisum.com.br",
+      };
+
+      // Dados do survey (versão simplificada para melhor compatibilidade)
+      const sections = [
+        {
+          id: "vision",
+          title: "Sua Visão de Sucesso",
+          icon: "target",
+          subtitle: "Vamos começar pelo que realmente importa: seus objetivos",
+          questions: [
+            {
+              id: "motivation",
+              question: "O que te motivou a pensar em um chatbot com IA?",
+              type: "single",
+              options: [
+                {
+                  value: 3,
+                  label: "Queremos melhorar a experiência dos nossos clientes",
+                },
+                {
+                  value: 2,
+                  label:
+                    "Precisamos reduzir a sobrecarga da equipe de atendimento",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Nossos concorrentes já têm e não queremos ficar para trás",
+                },
+                {
+                  value: 2,
+                  label:
+                    "Acreditamos que IA é o futuro e queremos estar prontos",
+                },
+              ],
+            },
+            {
+              id: "success_scenario",
+              question: "Qual seria o cenário ideal em 6 meses?",
+              type: "single",
+              options: [
+                {
+                  value: 1,
+                  label:
+                    "Nossos clientes conseguem resolver 80% das dúvidas sozinhos",
+                },
+                {
+                  value: 0,
+                  label: "Nossa equipe foca no que realmente importa",
+                },
+                {
+                  value: 1,
+                  label: "Atendemos mais clientes sem contratar mais pessoas",
+                },
+                {
+                  value: 0,
+                  label: "Nossos clientes elogiam nosso atendimento inovador",
+                },
+              ],
+            },
+            {
+              id: "timeline",
+              question:
+                "Quando vocês gostariam de ver os primeiros resultados?",
+              type: "single",
+              options: [
+                { value: 3, label: "Em algumas semanas (temos urgência)" },
+                { value: 2, label: "Em 1-2 meses (ritmo acelerado)" },
+                { value: 1, label: "Em 2-4 meses (ritmo equilibrado)" },
+                {
+                  value: 0,
+                  label: "Em 4+ meses (vamos fazer com calma e qualidade)",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "current_state",
+          title: "Como Funciona Hoje",
+          icon: "message-square",
+          subtitle:
+            "Conhecer sua realidade atual nos ajuda a criar algo que se encaixa perfeitamente",
+          questions: [
+            {
+              id: "contact_channels",
+              question: "Como seus clientes entram em contato hoje?",
+              type: "multiple",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Principalmente WhatsApp (a maioria dos nossos clientes usa)",
+                },
+                { value: 1, label: "Telefone e email (mais tradicional)" },
+                { value: 1, label: "Redes sociais (Instagram, Facebook)" },
+                { value: 0, label: "Site e formulários online" },
+              ],
+            },
+            {
+              id: "data_organization",
+              question: "Como sua equipe organiza as informações dos clientes?",
+              type: "single",
+              options: [
+                {
+                  value: 3,
+                  label: "Cada um tem seu jeito (meio bagunçado, mas funciona)",
+                },
+                {
+                  value: 2,
+                  label: "Usamos planilhas Excel (organizado, mas manual)",
+                },
+                {
+                  value: 1,
+                  label: "Temos um sistema básico (alguma automação)",
+                },
+                {
+                  value: 0,
+                  label:
+                    "Sistema integrado com histórico completo (bem estruturado)",
+                },
+              ],
+            },
+            {
+              id: "automation_level",
+              question: "Sua equipe já usa algum tipo de automação?",
+              type: "single",
+              options: [
+                {
+                  value: 3,
+                  label:
+                    "Ainda fazemos tudo manual (oportunidade incrível para IA!)",
+                },
+                {
+                  value: 2,
+                  label: "Temos algumas automações simples (bom começo)",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Já automatizamos várias coisas (ótima base para expandir)",
+                },
+                {
+                  value: 0,
+                  label: "Somos bem automatizados (perfeito para IA avançada)",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "team_resources",
+          title: "Sua Equipe e Recursos",
+          icon: "users",
+          subtitle:
+            "Vamos garantir que todo mundo esteja alinhado e confortável",
+          questions: [
+            {
+              id: "chatbot_owner",
+              question: 'Quem seria o "dono" do chatbot na empresa?',
+              type: "single",
+              options: [
+                {
+                  value: 3,
+                  label: "Ainda não pensamos nisso (vamos ajudar a definir)",
+                },
+                { value: 2, label: "Temos uma pessoa em mente (ótimo start)" },
+                {
+                  value: 1,
+                  label: "Temos alguém que já cuida de tecnologia (perfeito)",
+                },
+                {
+                  value: 0,
+                  label: "Temos uma equipe dedicada (estrutura ideal)",
+                },
+              ],
+            },
+            {
+              id: "decision_making",
+              question: "Como é a tomada de decisão para projetos como este?",
+              type: "single",
+              options: [
+                {
+                  value: 2,
+                  label:
+                    "Preciso conversar com várias pessoas (normal, vamos ajudar)",
+                },
+                {
+                  value: 1,
+                  label: "Eu e mais 1-2 pessoas decidimos (agilidade boa)",
+                },
+                {
+                  value: 0,
+                  label: "Eu tenho autonomia para aprovar (máxima agilidade)",
+                },
+              ],
+            },
+            {
+              id: "team_attitude",
+              question: "Sua equipe está animada com a ideia de IA?",
+              type: "single",
+              options: [
+                {
+                  value: 2,
+                  label:
+                    "Alguns têm receio de serem substituídos (vamos mostrar como IA potencializa)",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Estão curiosos mas inseguros (normal, faremos treinamento)",
+                },
+                {
+                  value: 0,
+                  label: "Estão empolgados para testar (energia positiva)",
+                },
+                {
+                  value: 0,
+                  label: "Já usam IA em outras áreas (super preparados)",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "investment",
+          title: "Investimento e Expectativas",
+          icon: "dollar-sign",
+          subtitle:
+            "Vamos alinhar expectativas para criar uma proposta que faz sentido",
+          questions: [
+            {
+              id: "budget_range",
+              question:
+                "Qual o range de investimento que faz sentido para vocês?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label: "Queremos começar pequeno (até R$ 5.000)",
+                  budget: 5000,
+                },
+                {
+                  value: 1,
+                  label: "Podemos investir moderadamente (R$ 5.000-15.000)",
+                  budget: 15000,
+                },
+                {
+                  value: 2,
+                  label: "Investimento robusto é OK (R$ 15.000-50.000)",
+                  budget: 50000,
+                },
+                {
+                  value: 3,
+                  label: "Orçamento flexível para fazer direito (R$ 50.000+)",
+                  budget: 100000,
+                },
+              ],
+            },
+            {
+              id: "priority",
+              question: "O que mais importa para vocês?",
+              type: "single",
+              options: [
+                {
+                  value: 1,
+                  label:
+                    "Preço baixo (vamos encontrar a melhor relação custo-benefício)",
+                },
+                {
+                  value: 2,
+                  label: "Rapidez (priorizaremos velocidade de implementação)",
+                },
+                {
+                  value: 0,
+                  label:
+                    "Qualidade (faremos com excelência, no tempo necessário)",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Inovação (tecnologia de ponta, mesmo que mais complexa)",
+                },
+              ],
+            },
+            {
+              id: "project_style",
+              question: "Como preferem que o projeto seja conduzido?",
+              type: "single",
+              options: [
+                {
+                  value: 2,
+                  label:
+                    "Queremos acompanhar de perto cada passo (parceria total)",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Preferimos receber updates regulares (comunicação estruturada)",
+                },
+                {
+                  value: 0,
+                  label:
+                    "Confiem em vocês, mostrem resultado final (autonomia máxima)",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "technical",
+          title: "Detalhes Técnicos",
+          icon: "settings",
+          subtitle: "Estas informações nos ajudam a preparar tudo certinho",
+          questions: [
+            {
+              id: "complexity",
+              question: "Qual a complexidade do atendimento de vocês?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Principalmente perguntas simples e repetitivas (IA vai arrasar)",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Mix de simples e complexas (IA + humanos = combo perfeito)",
+                },
+                {
+                  value: 2,
+                  label:
+                    "Muitas perguntas técnicas específicas (IA especializada)",
+                },
+                {
+                  value: 3,
+                  label: "Cada caso é único (IA + processo personalizado)",
+                },
+              ],
+            },
+            {
+              id: "integrations",
+              question: "Vocês precisariam integrar com outros sistemas?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Não temos outros sistemas (implementação mais simples)",
+                },
+                {
+                  value: 1,
+                  label: "Temos 1-2 sistemas básicos (integrações tranquilas)",
+                },
+                {
+                  value: 2,
+                  label: "Vários sistemas diferentes (desafio interessante)",
+                },
+                { value: 3, label: "Ecossistema complexo (projeto robusto)" },
+              ],
+            },
+            {
+              id: "departments",
+              question: "Quantas pessoas/departamentos seriam impactados?",
+              type: "single",
+              options: [
+                { value: 0, label: "Só uma área (foco e agilidade)" },
+                { value: 1, label: "2-3 áreas (coordenação simples)" },
+                { value: 2, label: "Empresa toda (transformação completa)" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "metrics",
+          title: "Acompanhamento de Resultados",
+          icon: "bar-chart",
+          subtitle: "Como vamos comemorar o sucesso juntos?",
+          questions: [
+            {
+              id: "success_measure",
+              question: "Como vocês saberão que o projeto foi um sucesso?",
+              type: "multiple",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Clientes mais satisfeitos (mediremos NPS e satisfação)",
+                },
+                {
+                  value: 0,
+                  label:
+                    "Equipe menos sobrecarregada (acompanharemos volume e stress)",
+                },
+                {
+                  value: 0,
+                  label: "Mais vendas/conversões (tracked em números)",
+                },
+                {
+                  value: 0,
+                  label: "Redução de custos (ROI claro e mensurável)",
+                },
+              ],
+            },
+            {
+              id: "current_metrics",
+              question: "Vocês já acompanham métricas de atendimento?",
+              type: "single",
+              options: [
+                {
+                  value: 2,
+                  label:
+                    "Não medimos nada formalmente (vamos criar dashboard básico)",
+                },
+                {
+                  value: 1,
+                  label: "Temos alguns números soltos (organizaremos tudo)",
+                },
+                {
+                  value: 1,
+                  label:
+                    "Acompanhamos métricas básicas (melhoraremos o que existe)",
+                },
+                {
+                  value: 0,
+                  label:
+                    "Temos dashboards completos (integraremos às métricas atuais)",
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      // Estado da aplicação
+      let currentSection = 0;
+      let responses = {};
+      let clientInfo = {
+        company: "",
+        name: "",
+        email: "",
+        phone: "",
+      };
+
+      // Inicialização
+      document.addEventListener("DOMContentLoaded", function () {
+        // Configurar informações da empresa
+        document.getElementById("companyLogo").src = companyConfig.logo;
+        document.getElementById("companyName").textContent = companyConfig.name;
+        document.getElementById("companyContact").textContent =
+          companyConfig.contact;
+
+        // Inicializar ícones com fallback
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          console.log("Lucide não carregou, usando fallback");
+          createIconFallbacks();
+        }
+
+        // Renderizar primeira seção
+        renderSection();
+        updateProgress();
+
+        // Event listeners
+        document
+          .getElementById("prevButton")
+          .addEventListener("click", previousSection);
+        document
+          .getElementById("nextButton")
+          .addEventListener("click", nextSection);
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", closeModal);
+      });
+
+      // Função de fallback para ícones
+      function createIconFallbacks() {
+        const iconElements = document.querySelectorAll("[data-lucide]");
+        iconElements.forEach((element) => {
+          const iconName = element.getAttribute("data-lucide");
+          element.className = `icon-fallback icon-${iconName}`;
+        });
+      }
+
+      // Funções de navegação
+      function previousSection() {
+        if (currentSection > 0) {
+          currentSection--;
+          renderSection();
+          updateProgress();
+        }
+      }
+
+      function nextSection() {
+        if (currentSection < sections.length - 1) {
+          currentSection++;
+          renderSection();
+          updateProgress();
+        } else {
+          submitSurvey();
+        }
+      }
+
+      function updateProgress() {
+        const progress = (currentSection / sections.length) * 100;
+        document.getElementById("progressBar").style.width = progress + "%";
+        document.getElementById("progressText").textContent = `Seção ${
+          currentSection + 1
+        } de ${sections.length}`;
+        document.getElementById("sectionCounter").textContent = `${
+          currentSection + 1
+        } / ${sections.length}`;
+
+        // Atualizar botões
+        document.getElementById("prevButton").disabled = currentSection === 0;
+
+        const isLastSection = currentSection === sections.length - 1;
+        const nextButton = document.getElementById("nextButton");
+        if (isLastSection) {
+          nextButton.innerHTML =
+            '<i data-lucide="send" class="icon-sm"></i> Enviar';
+          nextButton.className =
+            "flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm";
+        } else {
+          nextButton.innerHTML =
+            'Próximo <i data-lucide="chevron-right" class="icon-sm"></i>';
+          nextButton.className =
+            "flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm";
+        }
+
+        // Recriar ícones
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          createIconFallbacks();
+        }
+      }
+
+      function renderSection() {
+        const section = sections[currentSection];
+        const container = document.getElementById("surveyContainer");
+
+        // Ocultar formulário de informações do cliente após a primeira seção
+        if (currentSection > 0) {
+          document.getElementById("clientInfoForm").style.display = "none";
+        } else {
+          document.getElementById("clientInfoForm").style.display = "block";
+        }
+
+        let html = `
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-2 bg-blue-100 rounded-lg">
+                            <i data-lucide="${section.icon}" class="icon"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">
+                                ${section.title}
+                            </h2>
+                            <p class="text-gray-600 text-xs">
+                                ${section.subtitle}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+            `;
+
+        section.questions.forEach((question) => {
+          html += `
+                    <div class="border-b border-gray-100 pb-4 last:border-b-0">
+                        <h3 class="text-base font-medium text-gray-800 mb-3">
+                            ${question.question}
+                        </h3>
+
+                        <div class="space-y-2">
+                `;
+
+          question.options.forEach((option, optionIndex) => {
+            const inputType = question.type === "single" ? "radio" : "checkbox";
+            const inputName = question.id;
+            const isChecked =
+              question.type === "single"
+                ? responses[question.id] === option.value
+                : (responses[question.id] || []).includes(option.value);
+
+            html += `
+                        <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-colors option-card ${
+                          isChecked ? "selected" : ""
+                        }">
+                            <input
+                                type="${inputType}"
+                                name="${inputName}"
+                                value="${option.value}"
+                                ${isChecked ? "checked" : ""}
+                                class="mt-1"
+                                data-question-id="${question.id}"
+                                data-question-type="${question.type}"
+                            />
+                            <span class="text-gray-700 text-sm">${
+                              option.label
+                            }</span>
+                        </label>
+                    `;
+          });
+
+          html += `
+                        </div>
+                    </div>
+                `;
+        });
+
+        html += `
+                    </div>
+                </div>
+            `;
+
+        container.innerHTML = html;
+
+        // Adicionar event listeners para as opções
+        container
+          .querySelectorAll('input[type="radio"], input[type="checkbox"]')
+          .forEach((input) => {
+            input.addEventListener("change", handleOptionChange);
+          });
+
+        // Recriar ícones
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          createIconFallbacks();
+        }
+      }
+
+      function handleOptionChange(event) {
+        const input = event.target;
+        const questionId = input.dataset.questionId;
+        const questionType = input.dataset.questionType;
+        const value = parseInt(input.value);
+
+        if (questionType === "single") {
+          responses[questionId] = value;
+        } else {
+          if (!responses[questionId]) {
+            responses[questionId] = [];
+          }
+
+          if (input.checked) {
+            if (!responses[questionId].includes(value)) {
+              responses[questionId].push(value);
+            }
+          } else {
+            responses[questionId] = responses[questionId].filter(
+              (v) => v !== value
+            );
+          }
+        }
+
+        // Atualizar visual das opções
+        const label = input.closest("label");
+        const card = label.closest(".option-card");
+
+        if (questionType === "single") {
+          // Remover seleção de todas as opções da mesma pergunta
+          card.parentElement.querySelectorAll(".option-card").forEach((c) => {
+            c.classList.remove("selected");
+          });
+        }
+
+        if (input.checked) {
+          card.classList.add("selected");
+        } else {
+          card.classList.remove("selected");
+        }
+      }
+
+      function submitSurvey() {
+        // Coletar informações do cliente
+        clientInfo.company = document.getElementById("clientCompany").value;
+        clientInfo.name = document.getElementById("clientName").value;
+        clientInfo.email = document.getElementById("clientEmail").value;
+        clientInfo.phone = document.getElementById("clientPhone").value;
+
+        // Calcular score
+        const { score } = calculateScore();
+        const maturity = getMaturityLevel(score);
+        const baseBudget = getBudgetFromResponses();
+        const finalBudget = baseBudget * maturity.multiplier;
+
+        // Preparar dados para envio
+        const surveyData = {
+          clientInfo,
+          responses,
+          score,
+          maturity,
+          baseBudget,
+          finalBudget,
+          timestamp: new Date().toISOString(),
+          recommendations: getRecommendations(score, responses),
+        };
+
+        // Enviar email
+        sendEmail(surveyData);
+
+        // Mostrar modal de sucesso
+        showSuccessModal();
+      }
+
+      function calculateScore() {
+        let score = 0;
+        let maxScore = 0;
+
+        sections.forEach((section) => {
+          section.questions.forEach((question) => {
+            if (question.type === "single") {
+              const response = responses[question.id];
+              if (response !== undefined) {
+                score += response;
+                maxScore += Math.max(
+                  ...question.options.map((opt) => opt.value)
+                );
+              }
+            } else if (question.type === "multiple") {
+              const responseArray = responses[question.id] || [];
+              responseArray.forEach((response) => {
+                score += response;
+              });
+              maxScore += question.options.reduce(
+                (sum, opt) => sum + opt.value,
+                0
+              );
+            }
+          });
+        });
+
+        return { score, maxScore };
+      }
+
+      function getMaturityLevel(score) {
+        if (score <= 8)
+          return { level: "Maduro", color: "green", multiplier: 1.1 };
+        if (score <= 16)
+          return { level: "Intermediário", color: "yellow", multiplier: 1.4 };
+        if (score <= 24)
+          return {
+            level: "Em Desenvolvimento",
+            color: "orange",
+            multiplier: 1.8,
+          };
+        return { level: "Iniciante", color: "red", multiplier: 2.2 };
+      }
+
+      function getBudgetFromResponses() {
+        const budgetResponse = responses.budget_range;
+        const budgetOptions = sections
+          .find((s) => s.id === "investment")
+          ?.questions.find((q) => q.id === "budget_range")?.options;
+
+        return (
+          budgetOptions?.find((opt) => opt.value === budgetResponse)?.budget ||
+          15000
+        );
+      }
+
+      function getRecommendations(score, responses) {
+        const recs = [];
+
+        if (score > 20) {
+          recs.push(
+            "🔄 Consultoria em Processos: Essencial para organizar fluxos internos (+50% no investimento)"
+          );
+          recs.push(
+            "👥 Gestão de Mudança: Treinamento extensivo da equipe será necessário"
+          );
+          recs.push(
+            "⏰ Timeline Estendida: Recomendamos 4-6 meses para implementação adequada"
+          );
+        }
+
+        if (responses.automation_level >= 2) {
+          recs.push(
+            "🎯 Oportunidade de Alto Impacto: Grande potencial para automação e ROI"
+          );
+        }
+
+        if (responses.timeline >= 2) {
+          recs.push(
+            "⚡ Taxa de Urgência: Timeline agressiva pode requerer recursos adicionais (+25-50%)"
+          );
+        }
+
+        if (responses.decision_making >= 1) {
+          recs.push(
+            "🤝 Workshops de Alinhamento: Múltiplos decisores requerem processo estruturado"
+          );
+        }
+
+        return recs;
+      }
+
+      function sendEmail(surveyData) {
+        // Configuração do EmailJS
+        const emailParams = {
+          to_email: companyConfig.email,
+          client_company: surveyData.clientInfo.company || "Não informado",
+          client_name: surveyData.clientInfo.name || "Não informado",
+          client_email: surveyData.clientInfo.email || "Não informado",
+          client_phone: surveyData.clientInfo.phone || "Não informado",
+          score: surveyData.score,
+          maturity_level: surveyData.maturity.level,
+          maturity_level_color: surveyData.maturity.color,
+          maturity_multiplier: surveyData.maturity.multiplier,
+          base_budget: surveyData.baseBudget.toLocaleString("pt-BR"),
+          final_budget: surveyData.finalBudget.toLocaleString("pt-BR"),
+          recommendations: surveyData.recommendations,
+          responses_json: JSON.stringify(surveyData.responses, null, 2),
+          timestamp: new Date().toLocaleString("pt-BR"),
+          company_email: companyConfig.email,
+          company_website:
+            companyConfig.contact.split("•").pop()?.trim() ||
+            "www.suaempresa.com.br",
+        };
+
+        // Tentar enviar via EmailJS se estiver configurado
+        if (typeof emailjs !== "undefined") {
+          emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailParams).then(
+            function (response) {
+              console.log("Email enviado com sucesso:", response);
+            },
+            function (error) {
+              console.error("Erro ao enviar email:", error);
+              console.log("Dados do survey (fallback):", surveyData);
+            }
+          );
+        } else {
+          // Fallback: mostrar dados no console
+          console.log("EmailJS não configurado. Dados do survey:", surveyData);
+        }
+      }
+
+      function showSuccessModal() {
+        document.getElementById("successModal").classList.remove("hidden");
+        document.getElementById("successModal").classList.add("flex");
+      }
+
+      function closeModal() {
+        document.getElementById("successModal").classList.add("hidden");
+        document.getElementById("successModal").classList.remove("flex");
+      }
+    </script>
+  </body>
+</html>
