@@ -249,15 +249,21 @@
       <!-- Header -->
       <div class="text-center mb-6">
         <div class="mb-4">
-          <img
-            src="/original-tagline.png"
-            alt="Logo da Empresa"
-            class="h-20 mx-auto mb-2"
+          <div
             id="companyLogo"
-            style="max-width: 350px; height: auto; display: block"
-            onerror="this.style.display='none'; console.log('Logo não carregou:', this.src);"
-            onload="console.log('Logo carregou com sucesso:', this.src);"
-          />
+            style="
+              width: 350px;
+              height: 80px;
+              margin: 0 auto 8px auto;
+              background-image: url('/original-tagline.png');
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: center;
+              border: 1px solid #e5e7eb;
+              border-radius: 8px;
+            "
+            title="Logo da Empresa"
+          ></div>
           <h2 class="text-lg font-semibold text-gray-800" id="companyName">
             Datavisum - Soluções em Inteligência Artificial
           </h2>
@@ -942,7 +948,7 @@
             "para modo:",
             colorScheme
           );
-          logoElement.src = newSrc;
+          logoElement.style.backgroundImage = `url('${newSrc}')`;
         }
       }
 
