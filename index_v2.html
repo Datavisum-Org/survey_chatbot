@@ -1360,49 +1360,101 @@
         const maturityScore = analysis.dimensionScores.maturity?.score || 0;
         const complexityScore = analysis.dimensionScores.complexity?.score || 0;
         const effortScore = analysis.dimensionScores.effort?.score || 0;
+        const investmentScore = analysis.dimensionScores.investment?.score || 0;
+        const executionScore = analysis.dimensionScores.execution?.score || 0;
 
+        // Análise detalhada do perfil
+        const isMature = maturityScore <= 1; // Baixa pontuação = alta maturidade
+        const isHighInvestment = investmentScore >= 2;
+        const isComplex = complexityScore >= 2;
+        const isTeamReady = effortScore <= 1;
+        const isFastExecution = executionScore >= 2;
+        const isSmallCompany = analysis.clientInfo.size === "low";
+        const isMediumRevenue = analysis.clientInfo.revenue === "medium";
+
+        // Determinar foco do projeto
         let projectFocus;
-        if (maturityScore >= 2.5 && effortScore >= 2.5) {
+        if (isMature && isComplex) {
           projectFocus =
-            "CONSULTIVO - Foco em planejamento e desenho de processos";
-        } else if (complexityScore >= 2.5) {
+            "CONSULTIVO - Organização madura com necessidades complexas";
+        } else if (isComplex && !isMature) {
           projectFocus =
-            "DESENVOLVIMENTO - Múltiplos sistemas e stakeholders envolvidos";
+            "DESENVOLVIMENTO - Múltiplas integrações e funcionalidades avançadas";
+        } else if (isMature && !isComplex) {
+          projectFocus = "OTIMIZAÇÃO - Processos maduros, foco em eficiência";
         } else {
-          projectFocus =
-            "EQUILIBRADO - Processos estruturados e sistemas bem definidos";
+          projectFocus = "IMPLEMENTAÇÃO - Base sólida para crescimento futuro";
         }
 
-        if (finalScorePercent >= 75) {
-          proposalPositioning = "Foco em consultoria e transformação digital";
-          proposalHighlight = "Redução de custos e otimização de processos";
-          proposalTimeline = "Projeto em fases com acompanhamento contínuo";
+        // Insights personalizados baseados no perfil
+        if (isMature && isHighInvestment && isTeamReady) {
+          // Cliente maduro, alto investimento, equipe preparada
+          proposalPositioning = "Solução premium para organização madura";
+          proposalHighlight =
+            "Otimização de processos existentes e ROI acelerado";
+          proposalTimeline =
+            "Implementação rápida (1-2 meses) com equipe preparada";
           salesTip =
-            "Enfatizar a consultoria e transformação digital. Cliente precisa de suporte completo.";
-          confidenceLevel = "Alta - Cliente qualificado";
+            "Enfatizar eficiência e ROI. Cliente já tem base sólida e quer resultados rápidos.";
+          confidenceLevel = "Alta - Cliente qualificado e preparado";
           contactPriority = "ALTA";
           riskAlerts =
-            "• Alta Complexidade: Projeto pode requerer recursos adicionais e timeline estendida\n• Gestão de Mudança: Necessário trabalho intensivo com a equipe do cliente\n• Integrações: Múltiplas integrações podem aumentar riscos técnicos";
-        } else if (finalScorePercent >= 50) {
-          proposalPositioning = "Solução completa com suporte";
-          proposalHighlight = "Automação e melhoria de atendimento";
-          proposalTimeline = "Implementação estruturada";
+            "• Expectativas altas: Cliente maduro espera resultados rápidos\n• Integrações: Verificar compatibilidade com sistemas existentes";
+        } else if (isMature && !isHighInvestment) {
+          // Cliente maduro, investimento moderado
+          proposalPositioning = "Solução eficiente para organização madura";
+          proposalHighlight = "Melhoria incremental com baixo risco";
+          proposalTimeline = "Implementação gradual (2-3 meses)";
           salesTip =
-            "Focar na solução completa e ROI. Cliente está pronto para investir.";
-          confidenceLevel = "Média - Cliente promissor";
+            "Focar em melhorias incrementais e baixo risco. Cliente é conservador.";
+          confidenceLevel = "Média - Cliente maduro mas conservador";
           contactPriority = "MÉDIA";
           riskAlerts =
-            "• Complexidade Moderada: Atenção especial para integrações e treinamento\n• Processos: Pode ser necessário redesenho parcial de processos";
-        } else {
-          proposalPositioning = "Solução ágil e eficiente";
-          proposalHighlight = "Implementação rápida e ROI imediato";
-          proposalTimeline = "Implementação rápida e direta";
+            "• Conservadorismo: Cliente pode ser resistente a mudanças\n• ROI: Demonstrar valor incremental claramente";
+        } else if (!isMature && isHighInvestment && isFastExecution) {
+          // Cliente imaturo, alto investimento, execução rápida
+          proposalPositioning = "Transformação digital acelerada";
+          proposalHighlight = "Modernização completa com suporte intensivo";
+          proposalTimeline = "Projeto em fases com acompanhamento contínuo";
           salesTip =
-            "Destacar rapidez e simplicidade. Cliente quer resultados rápidos.";
-          confidenceLevel = "Baixa - Cliente básico";
-          contactPriority = "BAIXA";
+            "Enfatizar transformação e suporte completo. Cliente quer mudança rápida.";
+          confidenceLevel = "Alta - Cliente ambicioso";
+          contactPriority = "ALTA";
           riskAlerts =
-            "• Baixa Complexidade: Projeto direto, mas atenção à expectativa de resultados\n• Escopo: Garantir que o cliente entenda as limitações da solução básica";
+            "• Gestão de mudança: Necessário suporte intensivo à equipe\n• Processos: Redesenho completo pode ser necessário\n• Timeline: Cliente quer resultados rápidos";
+        } else if (!isMature && isHighInvestment) {
+          // Cliente imaturo, alto investimento
+          proposalPositioning = "Consultoria + desenvolvimento personalizado";
+          proposalHighlight = "Redesenho de processos + implementação";
+          proposalTimeline = "Projeto estruturado (3-4 meses)";
+          salesTip =
+            "Focar em consultoria e transformação. Cliente precisa de suporte completo.";
+          confidenceLevel = "Média - Cliente ambicioso mas precisa de suporte";
+          contactPriority = "MÉDIA";
+          riskAlerts =
+            "• Processos: Necessário redesenho completo\n• Equipe: Treinamento intensivo necessário\n• Gestão de mudança: Projeto pode ser desafiador";
+        } else if (isSmallCompany && isMediumRevenue) {
+          // Empresa pequena com receita média
+          proposalPositioning = "Solução ágil para crescimento";
+          proposalHighlight = "Implementação rápida e escalável";
+          proposalTimeline = "Implementação direta (1-2 meses)";
+          salesTip =
+            "Destacar simplicidade e crescimento. Cliente quer solução que cresça com ele.";
+          confidenceLevel = "Média - Cliente em crescimento";
+          contactPriority = "MÉDIA";
+          riskAlerts =
+            "• Escalabilidade: Garantir que a solução cresça com a empresa\n• Recursos: Cliente pode ter limitações de equipe";
+        } else {
+          // Perfil padrão
+          proposalPositioning = "Solução personalizada";
+          proposalHighlight = "Implementação sob medida";
+          proposalTimeline = "Implementação estruturada";
+          salesTip =
+            "Focar em personalização e valor. Cliente precisa de solução específica.";
+          confidenceLevel = "Média - Cliente padrão";
+          contactPriority = "MÉDIA";
+          riskAlerts =
+            "• Personalização: Necessário entender necessidades específicas\n• Escopo: Definir claramente o que está incluído";
         }
 
         const emailParams = {
