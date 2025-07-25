@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Survey de Modernização - Chatbot com IA"
+    />
+    <meta name="theme-color" content="#3B82F6" />
+    <title>Modernização com IA - Datavisum</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+      emailjs.init("FH_uEYeauNNgv6tXb");
+    </script>
+
+    <style>
+      :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f9fafb;
+        --text-primary: #111827;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --card-bg: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-primary: #0f0f0f;
+          --bg-secondary: #1a1a1a;
+          --text-primary: #f8fafc;
+          --text-secondary: #cbd5e1;
+          --border-color: #334155;
+          --card-bg: #1e293b;
+        }
+      }
+
+      body {
+        background-color: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+      }
+
+      .bg-gray-50 {
+        background-color: var(--bg-secondary) !important;
+      }
+      .bg-white {
+        background-color: var(--card-bg) !important;
+      }
+      .text-gray-800 {
+        color: var(--text-primary) !important;
+      }
+      .text-gray-600 {
+        color: var(--text-secondary) !important;
+      }
+      .text-gray-500 {
+        color: var(--text-secondary) !important;
+      }
+      .border-gray-200 {
+        border-color: var(--border-color) !important;
+      }
+      .border-gray-300 {
+        border-color: var(--border-color) !important;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .bg-blue-600 {
+          background-color: #3b82f6 !important;
+        }
+        .bg-blue-600:hover {
+          background-color: #2563eb !important;
+        }
+        .bg-green-600 {
+          background-color: #10b981 !important;
+        }
+        .bg-green-600:hover {
+          background-color: #059669 !important;
+        }
+        .text-gray-900 {
+          color: #f8fafc !important;
+        }
+        .text-gray-700 {
+          color: #e2e8f0 !important;
+        }
+        .text-gray-600 {
+          color: #cbd5e1 !important;
+        }
+        .text-gray-500 {
+          color: #94a3b8 !important;
+        }
+        .icon {
+          color: #007bff !important;
+        }
+
+        /* Corrigir contraste dos inputs */
+        input,
+        select,
+        textarea {
+          color: #111827 !important;
+          background-color: #ffffff !important;
+        }
+
+        /* Cor dos botões radio e checkbox das opções */
+        .option-card input[type="checkbox"] {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 1.2rem;
+          height: 1.2rem;
+          border: 2px solid #d1d5db;
+          border-radius: 4px;
+          margin-right: 0.5rem;
+          position: relative;
+          cursor: pointer;
+        }
+
+        .option-card input[type="checkbox"]:checked {
+          background-color: #3b82f6;
+          border-color: #3b82f6;
+        }
+
+        .option-card input[type="checkbox"]:checked::after {
+          content: "✓";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: bold;
+        }
+
+        /* Corrigir contraste das opções selecionadas */
+        .option-card.selected {
+          background-color: #dbeafe !important;
+          border-color: #3b82f6 !important;
+        }
+
+        .option-card.selected span {
+          color: #1e40af !important;
+        }
+      }
+
+      .progress-bar {
+        transition: width 0.3s ease;
+      }
+      .option-card {
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .option-card:hover {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+      }
+      .option-card.selected {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+      }
+
+      /* Modo escuro para option cards */
+      @media (prefers-color-scheme: dark) {
+        .option-card:hover {
+          background-color: #1e3a8a !important;
+          border-color: #3b82f6 !important;
+        }
+        .option-card.selected {
+          background-color: #007bff !important;
+          border-color: #f4f4f6 !important;
+        }
+        .option-card span {
+          color: #f3f4f6; /* ← Cor do texto (modo escuro) */
+        }
+        .option-card.selected span {
+          color: #f3f4f6 !important;
+        }
+      }
+
+      .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      .icon-sm {
+        width: 1rem;
+        height: 1rem;
+      }
+      .icon-lg {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      @media (max-width: 640px) {
+        .mobile-padding {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        .mobile-text {
+          font-size: 0.875rem;
+        }
+      }
+
+      /* Garantir que inputs funcionem no mobile */
+      input[type="radio"],
+      input[type="checkbox"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 2px solid #3b82f6;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+        position: relative;
+        cursor: pointer;
+      }
+
+      input[type="radio"]:checked,
+      input[type="checkbox"]:checked {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+      }
+
+      input[type="radio"]:checked::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0.4rem;
+        height: 0.4rem;
+        background-color: rgb(41, 10, 238);
+        border-radius: 50%;
+      }
+
+      input[type="checkbox"]:checked::after {
+        content: "✓";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto p-4 mobile-padding">
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <div class="mb-4">
+          <img
+            src="./original-tagline.png"
+            alt="Logo da Empresa"
+            class="h-20 mx-auto mb-2"
+            id="companyLogo"
+            style="max-width: 350px; height: auto"
+          />
+          <h2 class="text-lg font-semibold text-gray-800" id="companyName">
+            Datavisum - Soluções em Inteligência Artificial
+          </h2>
+          <p class="text-xs text-gray-600 mobile-text" id="companyContact">
+            São Caetano do Sul, SP • (11) 96380-2000 • www.datavisum.com.br
+          </p>
+        </div>
+
+        <div
+          class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3"
+        >
+          <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+          Planejamento do Seu Chatbot com IA
+        </h1>
+        <p class="text-gray-600 mb-4 mobile-text">
+          Vamos desenhar juntos a solução perfeita para sua empresa!
+        </p>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+          <div
+            class="bg-blue-600 h-2 rounded-full progress-bar"
+            id="progressBar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <p class="text-xs text-gray-500" id="progressText">Etapa 1 de 5</p>
+      </div>
+
+      <!-- Client Info Form -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-4" id="clientInfoForm">
+        <h3 class="text-base font-semibold text-gray-800 mb-3">
+          Suas Informações
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <input
+            type="text"
+            placeholder="Nome da Empresa"
+            id="clientCompany"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Seu Nome"
+            id="clientName"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            id="clientEmail"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <input
+            type="tel"
+            placeholder="Telefone"
+            id="clientPhone"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          <select
+            id="companySize"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          >
+            <option value="">Número de colaboradores</option>
+            <option value="low">Até 10 colaboradores</option>
+            <option value="medium">De 11 a 50 colaboradores</option>
+            <option value="high">De 51 a 249 colaboradores</option>
+            <option value="enterprise">Acima de 250 colaboradores</option>
+            <option value="not-informed">Prefiro não informar</option>
+          </select>
+          <select
+            id="annualRevenue"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          >
+            <option value="">Faturamento anual aproximado</option>
+            <option value="low">Até R$ 1 milhão</option>
+            <option value="medium">R$ 1 milhão - R$ 10 milhões</option>
+            <option value="high">R$ 10 milhões - R$ 50 milhões</option>
+            <option value="enterprise">Acima de R$ 50 milhões</option>
+            <option value="not-informed">Prefiro não informar</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Survey Sections -->
+      <div id="surveyContainer"></div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between items-center mt-6">
+        <button
+          id="prevButton"
+          class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          disabled
+        >
+          <i data-lucide="chevron-left" class="icon-sm"></i> Anterior
+        </button>
+        <div class="text-xs text-gray-500" id="sectionCounter">1 / 5</div>
+        <button
+          id="nextButton"
+          class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+        >
+          Próximo <i data-lucide="chevron-right" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <!-- Encouragement Message -->
+      <div class="mt-6 p-3 bg-blue-50 rounded-lg text-center">
+        <p class="text-blue-800 text-xs">
+          💡 <strong>Lembre-se:</strong> Não existe resposta "errada"! Cada
+          empresa é única e merece uma solução personalizada.
+        </p>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div
+      id="successModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"
+    >
+      <div class="bg-white rounded-lg p-6 max-w-lg w-full text-center">
+        <div
+          class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <i data-lucide="check" class="w-6 h-6 text-white"></i>
+        </div>
+        <h2 class="text-xl font-bold text-gray-800 mb-3">
+          Obrigado pelo seu tempo!
+        </h2>
+        <p class="text-gray-600 mb-4 text-sm">
+          Parabéns! Você acaba de dar um passo importante na modernização do seu
+          negócio! Suas informações foram enviadas com sucesso e nossa equipe
+          especializada irá analisar cuidadosamente cada detalhe para criar uma
+          solução personalizada.
+        </p>
+        <p class="text-gray-600 mb-4 text-sm">
+          Em breve, entraremos em contato para agendar a apresentação da
+          proposta e dar início ao processo de transformação do seu atendimento
+          com IA.
+        </p>
+        <div class="bg-blue-50 p-3 rounded-lg mb-4">
+          <p class="text-blue-800 text-xs">
+            🚀 <strong>Próximos passos:</strong><br />
+            • Análise detalhada das suas necessidades<br />
+            • Criação de proposta personalizada<br />
+            • Agendamento de reunião para apresentação da proposta
+          </p>
+        </div>
+        <button
+          id="closeModal"
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+        >
+          Entendi
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Configurações da empresa
+      const companyConfig = {
+        logo: {
+          light: "./logo-blue-icon-tagline.png",
+          dark: "./original-tagline.png",
+        },
+        name: "Datavisum - Soluções em Inteligência Artificial",
+        contact:
+          "São Caetano do Sul, SP • (11) 96380-2000 • www.datavisum.com.br",
+        email: "kelsen@datavisum.com.br",
+      };
+
+      // Sistema de dimensões com linguagem amigável
+      const dimensions = [
+        {
+          id: "maturity",
+          title: "Como Funciona Hoje",
+          icon: "target",
+          subtitle:
+            "Vamos entender sua realidade atual para criar algo que se encaixa perfeitamente",
+          weight: 0.25,
+          questions: [
+            {
+              id: "process_maturity",
+              question:
+                "Qual é o canal de atendimento mais utilizado na sua empresa?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Principalmente WhatsApp (a maioria dos nossos clientes usa)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Telefone e email (nossos clientes são mais tradicionais)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Redes sociais: Instagram, Facebook, etc. (nossos clientes são mais modernos)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Site e formulários online (nossos clientes usam tecnologias mais comuns)",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "tech_maturity",
+              question: "Sua equipe já usa algum tipo de automação?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Somos bem automatizados e já utilizamos chatbots convencionais (perfeito para IA avançada)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Automatizamos as rotinas de atendimento, mas ainda não trabalhmos com chatbots (ótima base para expandir)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Temos algumas automações simples, mas o atendimento é essencialmente humano (bom começo)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Ainda fazemos tudo manual (oportunidade incrível para IA!)",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "data_maturity",
+              question: "Como a equipe organiza as informações dos clientes?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Temos CRM integrado com histórico completo e funil de vendas bem estruturado",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Temos um CRM básico, com dados de cadastro e algumas automações",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Usamos planilhas Excel preenchidas manualmente, mas organizado",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Não temos um sistema ou método bem definidos, mas funciona",
+                  score: 3,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "investment",
+          title: "Seus Objetivos",
+          icon: "dollar-sign",
+          subtitle:
+            "Vamos alinhar expectativas para criar uma solução que faz sentido para vocês",
+          weight: 0.2,
+          questions: [
+            {
+              id: "budget_range",
+              question: "Qual faixa de investimento faz sentido para vocês?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label: "Vamos começar com um orçamento mais conservador",
+                  score: 0,
+                  budget: 5000,
+                },
+                {
+                  value: 1,
+                  label: "Queremos investir um pouco mais, mas não muito",
+                  score: 1,
+                  budget: 15000,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Estamos dispostos a investir de forma robusta para melhorar o atendimento",
+                  score: 2,
+                  budget: 50000,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Temos um orçamento flexível para obter resultados extraordinários",
+                  score: 3,
+                  budget: 100000,
+                },
+              ],
+            },
+            {
+              id: "project_priority",
+              question:
+                "O que é mais importante para a sua empresa neste momento?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Qualidade (faremos com excelência, no tempo necessário)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label: "Preço (buscamos a melhor relação custo-benefício)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label: "Rapidez (priorizaremos velocidade de implementação)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Inovação (queremos tecnologia de ponta para obter resultados incríveis)",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "timeline_urgency",
+              question:
+                "Quando vocês gostariam de ver os primeiros resultados?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label: "Em 4+ meses (vamos fazer com calma e qualidade)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label: "Em 2-4 meses (ritmo equilibrado)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label: "Em 1-2 meses (ritmo acelerado)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label: "Em algumas semanas (temos urgência)",
+                  score: 3,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "complexity",
+          title: "Suas Necessidades",
+          icon: "settings",
+          subtitle:
+            "Vamos entender o que vocês precisam para criar a solução ideal",
+          weight: 0.25,
+          questions: [
+            {
+              id: "integration_count",
+              question:
+                "Vocês usam algum sistema para gerenciar clientes ou vendas?",
+              type: "single",
+              options: [
+                { value: 0, label: "Não usamos sistemas externos", score: 0 },
+                { value: 1, label: "Usamos 1-2 sistemas básicos", score: 1 },
+                {
+                  value: 2,
+                  label: "Temos vários sistemas diferentes",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label: "Temos um ecossistema complexo de sistemas-legado",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "functionality_scope",
+              question: "Que tipo de funcionalidades vocês gostariam?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label: "Atendimento básico (detalhes na proposta)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Atendimento Básico + funcionalidades extras (detalhes na proposta)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Solução de atendimento multicanal com integrações (ERP, CRM, etc.)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Solução de atendimento personalizada, com integrações e funcionalidades avançadas",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "data_volume",
+              question: "Quantos clientes vocês atendem por mês?",
+              type: "single",
+              options: [
+                { value: 0, label: "Até 100 clientes", score: 0 },
+                { value: 1, label: "100 a 1.000 clientes", score: 1 },
+                { value: 2, label: "1.000 a 10.000 clientes", score: 2 },
+                { value: 3, label: "Mais de 10.000 clientes", score: 3 },
+              ],
+            },
+          ],
+        },
+        {
+          id: "effort",
+          title: "Sua Equipe",
+          icon: "users",
+          subtitle:
+            "Vamos garantir que todo mundo esteja confortável com as mudanças",
+          weight: 0.2,
+          questions: [
+            {
+              id: "team_readiness",
+              question:
+                "Sua equipe está animada com a ideia de usar IA para atender clientes?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label: "Já usam IA em outras áreas (super preparados)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label: "Estão empolgados para testar (energia positiva)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label: "Estão curiosos, mas inseguros (vamos treiná-los)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Têm receio de serem substituídos (vamos mostrar como IA potencializa o trabalho deles)",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "process_redesign",
+              question: "Como é a tomada de decisão para projetos como este?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label: "Eu tenho autonomia para aprovar (máxima agilidade)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label: "Eu e mais 1-2 pessoas decidimos (agilidade boa)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Preciso conversar com várias pessoas (podemos ajudar)",
+                  score: 2,
+                },
+              ],
+            },
+            {
+              id: "change_management",
+              question: "Como preferem que o projeto seja conduzido?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Confiamos em vocês, mostrem o resultado final (autonomia máxima)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Preferimos receber atualizações regulares (comunicação estruturada)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Queremos acompanhar de perto cada passo (parceria total)",
+                  score: 2,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "execution",
+          title: "Implementação",
+          icon: "clock",
+          subtitle: "Vamos planejar a melhor forma de implementar sua solução",
+          weight: 0.1,
+          questions: [
+            {
+              id: "project_scope",
+              question:
+                "Como você avalia a complexidade do atendimento ao cliente habitual da sua empresa?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Principalmente perguntas simples e repetitivas (IA vai arrasar)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Mix de perguntas simples e complexas (IA + humanos = combo perfeito)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Muitas perguntas técnicas específicas (IA especializada)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label: "Cada caso é único (IA + processo personalizado)",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "resource_availability",
+              question: "Vocês precisariam integrar com outros sistemas?",
+              type: "single",
+              options: [
+                {
+                  value: 0,
+                  label:
+                    "Não precisamos integrar com outros sistemas (implementação mais simples)",
+                  score: 0,
+                },
+                {
+                  value: 1,
+                  label:
+                    "Precisamos integrar com 1-2 sistemas básicos (integrações tranquilas)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label:
+                    "Precisamos integrar com vários sistemas diferentes (desafio interessante)",
+                  score: 2,
+                },
+                {
+                  value: 3,
+                  label:
+                    "Precisamos integrar com um ecossistema complexo de sistemas-legado (projeto arrojado)",
+                  score: 3,
+                },
+              ],
+            },
+            {
+              id: "dependencies",
+              question: "Quantas pessoas/departamentos seriam impactados?",
+              type: "single",
+              options: [
+                { value: 0, label: "Só uma área (foco e agilidade)", score: 0 },
+                {
+                  value: 1,
+                  label: "2-3 áreas (coordenação simples)",
+                  score: 1,
+                },
+                {
+                  value: 2,
+                  label: "Empresa toda (transformação completa)",
+                  score: 2,
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      // Estado da aplicação
+      let currentDimension = 0;
+      let responses = {};
+      let clientInfo = {
+        company: "",
+        name: "",
+        email: "",
+        phone: "",
+        size: "",
+        revenue: "",
+      };
+
+      // Inicialização
+      document.addEventListener("DOMContentLoaded", function () {
+        updateLogo();
+        document.getElementById("companyName").textContent = companyConfig.name;
+        document.getElementById("companyContact").textContent =
+          companyConfig.contact;
+
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          console.log("Lucide não carregou");
+        }
+
+        renderDimension();
+        updateProgress();
+
+        document
+          .getElementById("prevButton")
+          .addEventListener("click", previousDimension);
+        document
+          .getElementById("nextButton")
+          .addEventListener("click", nextDimension);
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", closeModal);
+
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", updateLogo);
+      });
+
+      function updateLogo() {
+        const logoElement = document.getElementById("companyLogo");
+        const colorScheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        logoElement.src = companyConfig.logo[colorScheme];
+      }
+
+      function previousDimension() {
+        if (currentDimension > 0) {
+          currentDimension--;
+          renderDimension();
+          updateProgress();
+        }
+      }
+
+      function nextDimension() {
+        if (currentDimension < dimensions.length - 1) {
+          currentDimension++;
+          renderDimension();
+          updateProgress();
+        } else {
+          // Verificar se todas as perguntas foram respondidas antes de enviar
+          if (validateAllResponses()) {
+            submitSurvey();
+          } else {
+            showValidationError();
+          }
+        }
+      }
+
+      function updateProgress() {
+        const progress = (currentDimension / dimensions.length) * 100;
+        document.getElementById("progressBar").style.width = progress + "%";
+        document.getElementById("progressText").textContent = `Etapa ${
+          currentDimension + 1
+        } de ${dimensions.length}`;
+        document.getElementById("sectionCounter").textContent = `${
+          currentDimension + 1
+        } / ${dimensions.length}`;
+
+        document.getElementById("prevButton").disabled = currentDimension === 0;
+
+        const isLastDimension = currentDimension === dimensions.length - 1;
+        const nextButton = document.getElementById("nextButton");
+        if (isLastDimension) {
+          nextButton.innerHTML =
+            '<i data-lucide="send" class="icon-sm"></i> Enviar';
+          nextButton.className =
+            "flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm";
+        } else {
+          nextButton.innerHTML =
+            'Próximo <i data-lucide="chevron-right" class="icon-sm"></i>';
+          nextButton.className =
+            "flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm";
+        }
+
+        try {
+          lucide.createIcons();
+        } catch (e) {}
+      }
+
+      function renderDimension() {
+        const dimension = dimensions[currentDimension];
+        const container = document.getElementById("surveyContainer");
+
+        if (currentDimension > 0) {
+          document.getElementById("clientInfoForm").style.display = "none";
+        } else {
+          document.getElementById("clientInfoForm").style.display = "block";
+        }
+
+        let html = `
+          <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2 bg-blue-100 rounded-lg">
+                <i data-lucide="${dimension.icon}" class="icon"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-semibold text-gray-800">${dimension.title}</h2>
+                <p class="text-gray-600 text-xs">${dimension.subtitle}</p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+        `;
+
+        dimension.questions.forEach((question) => {
+          html += `
+            <div class="border-b border-gray-100 pb-4 last:border-b-0">
+              <h3 class="text-base font-medium text-gray-800 mb-3">${question.question}</h3>
+              <div class="space-y-2">
+          `;
+
+          question.options.forEach((option) => {
+            const inputType = question.type === "single" ? "radio" : "checkbox";
+            const inputName = question.id;
+            const isChecked =
+              question.type === "single"
+                ? responses[question.id] === option.value
+                : (responses[question.id] || []).includes(option.value);
+
+            html += `
+              <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-colors option-card ${
+                isChecked ? "selected" : ""
+              }">
+                <input type="${inputType}" name="${inputName}" value="${
+              option.value
+            }" ${isChecked ? "checked" : ""} class="mt-1" data-question-id="${
+              question.id
+            }" data-question-type="${question.type}" />
+                <span class="text-gray-700 text-sm">${option.label}</span>
+              </label>
+            `;
+          });
+
+          html += `
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+
+        container.innerHTML = html;
+
+        container
+          .querySelectorAll('input[type="radio"], input[type="checkbox"]')
+          .forEach((input) => {
+            input.addEventListener("change", handleOptionChange);
+          });
+
+        try {
+          lucide.createIcons();
+        } catch (e) {}
+      }
+
+      function handleOptionChange(event) {
+        const input = event.target;
+        const questionId = input.dataset.questionId;
+        const questionType = input.dataset.questionType;
+        const value = parseInt(input.value);
+
+        if (questionType === "single") {
+          responses[questionId] = value;
+        } else {
+          if (!responses[questionId]) responses[questionId] = [];
+          if (input.checked) {
+            if (!responses[questionId].includes(value))
+              responses[questionId].push(value);
+          } else {
+            responses[questionId] = responses[questionId].filter(
+              (v) => v !== value
+            );
+          }
+        }
+
+        const label = input.closest("label");
+        const card = label.closest(".option-card");
+
+        if (questionType === "single") {
+          card.parentElement
+            .querySelectorAll(".option-card")
+            .forEach((c) => c.classList.remove("selected"));
+        }
+
+        if (input.checked) {
+          card.classList.add("selected");
+        } else {
+          card.classList.remove("selected");
+        }
+      }
+
+      function submitSurvey() {
+        // Coletar informações do cliente
+        clientInfo.company = document.getElementById("clientCompany").value;
+        clientInfo.name = document.getElementById("clientName").value;
+        clientInfo.email = document.getElementById("clientEmail").value;
+        clientInfo.phone = document.getElementById("clientPhone").value;
+        clientInfo.size = document.getElementById("companySize").value;
+        clientInfo.revenue = document.getElementById("annualRevenue").value;
+
+        // Atualizar barra de progresso para 100%
+        document.getElementById("progressBar").style.width = "100%";
+        document.getElementById("progressText").textContent = "Concluído!";
+
+        // Calcular análise multidimensional (mantido internamente)
+        const analysis = calculateMultidimensionalAnalysis();
+
+        // Enviar email
+        sendEmail(analysis);
+
+        // Mostrar modal de sucesso
+        showSuccessModal();
+      }
+
+      function calculateMultidimensionalAnalysis() {
+        const dimensionScores = {};
+        const dimensionDetails = {};
+
+        dimensions.forEach((dimension) => {
+          let dimensionScore = 0;
+          let maxScore = 0;
+          const questionScores = {};
+
+          dimension.questions.forEach((question) => {
+            const response = responses[question.id];
+            if (response !== undefined) {
+              const option = question.options.find(
+                (opt) => opt.value === response
+              );
+              if (option) {
+                dimensionScore += option.score;
+                questionScores[question.id] = {
+                  question: question.question,
+                  answer: option.label,
+                  score: option.score,
+                  maxScore: Math.max(
+                    ...question.options.map((opt) => opt.score)
+                  ),
+                };
+              }
+              maxScore += Math.max(...question.options.map((opt) => opt.score));
+            }
+          });
+
+          dimensionScores[dimension.id] = {
+            score: dimensionScore,
+            maxScore: maxScore,
+            percentage: maxScore > 0 ? (dimensionScore / maxScore) * 100 : 0,
+            weight: dimension.weight,
+          };
+
+          dimensionDetails[dimension.id] = {
+            title: dimension.title,
+            questions: questionScores,
+          };
+        });
+
+        // Calcular score ponderado total
+        let totalWeightedScore = 0;
+        let totalWeight = 0;
+
+        Object.values(dimensionScores).forEach((dim) => {
+          totalWeightedScore += (dim.percentage / 100) * dim.weight;
+          totalWeight += dim.weight;
+        });
+
+        const finalScore = totalWeightedScore / totalWeight;
+
+        // Determinar multiplicador baseado no score final
+        let multiplier, level, color;
+        if (finalScore <= 0.35) {
+          multiplier = 0.8; // Redução de 20% para projetos simples
+          level = "Baixa Complexidade";
+          color = "green";
+        } else if (finalScore <= 0.5) {
+          multiplier = 1.4;
+          level = "Complexidade Média";
+          color = "yellow";
+        } else if (finalScore <= 0.75) {
+          multiplier = 1.8;
+          level = "Alta Complexidade";
+          color = "orange";
+        } else {
+          multiplier = 2.2;
+          level = "Muito Alta Complexidade";
+          color = "red";
+        }
+
+        // Calcular orçamento base
+        const baseBudget = getBaseBudget(
+          responses,
+          clientInfo.size,
+          clientInfo.revenue
+        );
+        const finalBudget = baseBudget * multiplier;
+
+        // Calcular tempo estimado
+        const estimatedTime = calculateEstimatedTime(
+          dimensionScores,
+          finalScore
+        );
+
+        return {
+          clientInfo,
+          responses,
+          dimensionScores,
+          dimensionDetails,
+          finalScore,
+          multiplier,
+          level,
+          color,
+          baseBudget,
+          finalBudget,
+          estimatedTime,
+          recommendations: getRecommendations(dimensionScores, finalScore),
+        };
+      }
+
+      function getBaseBudget(responses, size, revenue) {
+        // Usar o orçamento informado pelo cliente como base
+        const clientBudget = getClientBudgetFromResponses(responses);
+
+        // Aplicar multiplicadores apenas para ajustes finos
+        const sizeMultiplier = getSizeMultiplier(size);
+        const revenueMultiplier = getRevenueMultiplier(revenue);
+
+        return clientBudget * sizeMultiplier * revenueMultiplier;
+      }
+
+      function getClientBudgetFromResponses(responses) {
+        if (responses.budget_range !== undefined) {
+          const budgetDimension = dimensions.find((d) => d.id === "investment");
+          const budgetQuestion = budgetDimension.questions.find(
+            (q) => q.id === "budget_range"
+          );
+          const selectedOption = budgetQuestion.options.find(
+            (opt) => opt.value === responses.budget_range
+          );
+          return selectedOption ? selectedOption.budget : 0;
+        }
+        return 0; // Se não houver resposta, retorna 0 para indicar erro
+      }
+
+      function getSizeMultiplier(size) {
+        const sizeMultipliers = {
+          low: 0.5,
+          medium: 1,
+          high: 2,
+          enterprise: 4,
+        };
+        return sizeMultipliers[size] || 1;
+      }
+
+      function getRevenueMultiplier(revenue) {
+        const revenueMultipliers = {
+          low: 0.7,
+          medium: 1,
+          high: 1.5,
+          enterprise: 2,
+        };
+        return revenueMultipliers[revenue] || 1;
+      }
+
+      function calculateEstimatedTime(dimensionScores, finalScore) {
+        let baseTime = 4;
+
+        if (dimensionScores.complexity.percentage > 50) baseTime += 2;
+        if (dimensionScores.effort.percentage > 50) baseTime += 2;
+        if (dimensionScores.execution.percentage > 50) baseTime += 1;
+
+        if (finalScore > 0.75) baseTime += 2;
+        else if (finalScore > 0.5) baseTime += 1;
+
+        return Math.max(4, Math.min(12, baseTime));
+      }
+
+      function getRecommendations(dimensionScores, finalScore) {
+        const recs = [];
+
+        if (dimensionScores.maturity.percentage > 70) {
+          recs.push(
+            "🔄 Consultoria em Processos: Necessária para organizar fluxos internos"
+          );
+        }
+
+        if (dimensionScores.complexity.percentage > 70) {
+          recs.push(
+            "🔧 Desenvolvimento Customizado: Integrações complexas requerem desenvolvimento específico"
+          );
+        }
+
+        if (dimensionScores.effort.percentage > 70) {
+          recs.push(
+            "👥 Gestão de Mudança: Treinamento extensivo e acompanhamento da equipe"
+          );
+        }
+
+        if (finalScore > 0.75) {
+          recs.push(
+            "⏰ Timeline Estendida: Recomendamos 8-12 semanas para implementação adequada"
+          );
+        }
+
+        if (dimensionScores.investment.percentage > 70) {
+          recs.push("💰 Orçamento Alto: Focar em soluções premium e ROI");
+        }
+
+        return recs;
+      }
+
+      function showSuccessModal() {
+        document.getElementById("successModal").classList.remove("hidden");
+        document.getElementById("successModal").classList.add("flex");
+      }
+
+      function closeModal() {
+        document.getElementById("successModal").classList.add("hidden");
+        document.getElementById("successModal").classList.remove("flex");
+      }
+
+      function sendEmail(analysis) {
+        // Gerar variáveis dinâmicas baseadas no score
+        const finalScorePercent = analysis.finalScore * 100;
+
+        let proposalPositioning,
+          proposalHighlight,
+          proposalTimeline,
+          salesTip,
+          confidenceLevel,
+          contactPriority,
+          riskAlerts;
+
+        // Determinar foco do projeto baseado nas dimensões
+        const maturityScore = analysis.dimensionScores.maturity?.score || 0;
+        const complexityScore = analysis.dimensionScores.complexity?.score || 0;
+        const effortScore = analysis.dimensionScores.effort?.score || 0;
+
+        let projectFocus;
+        if (maturityScore >= 2.5 && effortScore >= 2.5) {
+          projectFocus =
+            "CONSULTIVO - Foco em planejamento e desenho de processos";
+        } else if (complexityScore >= 2.5) {
+          projectFocus =
+            "DESENVOLVIMENTO - Múltiplos sistemas e stakeholders envolvidos";
+        } else {
+          projectFocus =
+            "EQUILIBRADO - Processos estruturados e sistemas bem definidos";
+        }
+
+        if (finalScorePercent >= 75) {
+          proposalPositioning = "Foco em consultoria e transformação digital";
+          proposalHighlight = "Redução de custos e otimização de processos";
+          proposalTimeline = "Projeto em fases com acompanhamento contínuo";
+          salesTip =
+            "Enfatizar a consultoria e transformação digital. Cliente precisa de suporte completo.";
+          confidenceLevel = "Alta - Cliente qualificado";
+          contactPriority = "ALTA";
+          riskAlerts =
+            "• Alta Complexidade: Projeto pode requerer recursos adicionais e timeline estendida\n• Gestão de Mudança: Necessário trabalho intensivo com a equipe do cliente\n• Integrações: Múltiplas integrações podem aumentar riscos técnicos";
+        } else if (finalScorePercent >= 50) {
+          proposalPositioning = "Solução completa com suporte";
+          proposalHighlight = "Automação e melhoria de atendimento";
+          proposalTimeline = "Implementação estruturada";
+          salesTip =
+            "Focar na solução completa e ROI. Cliente está pronto para investir.";
+          confidenceLevel = "Média - Cliente promissor";
+          contactPriority = "MÉDIA";
+          riskAlerts =
+            "• Complexidade Moderada: Atenção especial para integrações e treinamento\n• Processos: Pode ser necessário redesenho parcial de processos";
+        } else {
+          proposalPositioning = "Solução ágil e eficiente";
+          proposalHighlight = "Implementação rápida e ROI imediato";
+          proposalTimeline = "Implementação rápida e direta";
+          salesTip =
+            "Destacar rapidez e simplicidade. Cliente quer resultados rápidos.";
+          confidenceLevel = "Baixa - Cliente básico";
+          contactPriority = "BAIXA";
+          riskAlerts =
+            "• Baixa Complexidade: Projeto direto, mas atenção à expectativa de resultados\n• Escopo: Garantir que o cliente entenda as limitações da solução básica";
+        }
+
+        const emailParams = {
+          to_email: companyConfig.email,
+          client_company: analysis.clientInfo.company || "Não informado",
+          client_name: analysis.clientInfo.name || "Não informado",
+          client_email: analysis.clientInfo.email || "Não informado",
+          client_phone: analysis.clientInfo.phone || "Não informado",
+          client_size: analysis.clientInfo.size || "Não informado",
+          client_revenue: analysis.clientInfo.revenue || "Não informado",
+          final_score: finalScorePercent.toFixed(0),
+          complexity_level: analysis.level,
+          multiplier: analysis.multiplier,
+          base_budget: analysis.baseBudget.toLocaleString("pt-BR"),
+          final_budget: analysis.finalBudget.toLocaleString("pt-BR"),
+          estimated_time: analysis.estimatedTime,
+          recommendations: analysis.recommendations.join("\n• "),
+          dimension_breakdown: formatDimensionBreakdown(
+            analysis.dimensionDetails
+          ),
+          timestamp: new Date().toLocaleString("pt-BR"),
+          proposal_positioning: proposalPositioning,
+          proposal_highlight: proposalHighlight,
+          proposal_timeline: proposalTimeline,
+          sales_tip: salesTip,
+          confidence_level: confidenceLevel,
+          contact_priority: contactPriority,
+          risk_alerts: riskAlerts,
+          project_focus: projectFocus,
+        };
+
+        if (typeof emailjs !== "undefined") {
+          // Adicionar headers para autenticação
+          const templateParams = {
+            ...emailParams,
+            reply_to: companyConfig.email, // Adicionar reply-to
+            from_name: "Datavisum Survey", // Nome do remetente
+            to_name: "Equipe Datavisum", // Nome do destinatário
+          };
+
+          emailjs
+            .send("service_dwa4r9k", "template_jo2ayso", templateParams)
+            .then(
+              function (response) {
+                console.log("Email enviado:", response);
+              },
+              function (error) {
+                console.error("Erro:", error);
+              }
+            );
+        }
+      }
+
+      function formatDimensionBreakdown(dimensionDetails) {
+        let breakdown = "";
+        Object.entries(dimensionDetails).forEach(([key, dimension]) => {
+          breakdown += `\n\n${dimension.title}:\n`;
+          Object.entries(dimension.questions).forEach(([qKey, question]) => {
+            breakdown += `• ${question.question}: ${question.answer} (${question.score} pts)\n`;
+          });
+        });
+        return breakdown;
+      }
+
+      function validateAllResponses() {
+        const requiredQuestions = dimensions.flatMap((d) =>
+          d.questions.map((q) => q.id)
+        );
+        const answeredQuestions = Object.keys(responses);
+        return requiredQuestions.every((q) => answeredQuestions.includes(q));
+      }
+
+      function showValidationError() {
+        // Identificar perguntas não respondidas
+        const requiredQuestions = dimensions.flatMap((d) =>
+          d.questions.map((q) => ({
+            id: q.id,
+            question: q.question,
+            dimension: d.title,
+          }))
+        );
+        const answeredQuestions = Object.keys(responses);
+        const unansweredQuestions = requiredQuestions.filter(
+          (q) => !answeredQuestions.includes(q.id)
+        );
+
+        // Criar modal de erro de validação
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4";
+
+        let unansweredList = "";
+        if (unansweredQuestions.length > 0) {
+          unansweredList = `
+            <div class="bg-red-50 p-3 rounded-lg mb-4 text-left">
+              <p class="text-red-800 text-xs font-semibold mb-2">Perguntas pendentes:</p>
+              ${unansweredQuestions
+                .slice(0, 3)
+                .map(
+                  (q) =>
+                    `<p class="text-red-700 text-xs">• ${q.question.substring(
+                      0,
+                      50
+                    )}...</p>`
+                )
+                .join("")}
+              ${
+                unansweredQuestions.length > 3
+                  ? `<p class="text-red-700 text-xs">... e mais ${
+                      unansweredQuestions.length - 3
+                    } perguntas</p>`
+                  : ""
+              }
+            </div>
+          `;
+        }
+
+        modal.innerHTML = `
+          <div class="bg-white rounded-lg p-6 max-w-lg w-full text-center">
+            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-xl font-bold text-gray-800 mb-3">Atenção!</h2>
+            <p class="text-gray-600 mb-4 text-sm">
+              Para continuar, é necessário responder todas as perguntas do questionário.
+            </p>
+            ${unansweredList}
+            <p class="text-gray-600 mb-4 text-sm">
+              Por favor, volte e complete as perguntas que ainda não foram respondidas.
+            </p>
+            <button id="closeValidationModal" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              Entendi
+            </button>
+          </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Adicionar event listener para fechar modal
+        document
+          .getElementById("closeValidationModal")
+          .addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+
+        // Recriar ícones
+        try {
+          lucide.createIcons();
+        } catch (e) {}
+      }
+    </script>
+  </body>
+</html>
