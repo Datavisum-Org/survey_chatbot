@@ -252,15 +252,13 @@
           <div
             id="companyLogo"
             style="
-              width: 350px;
-              height: 80px;
+              width: 280px;
+              height: 60px;
               margin: 0 auto 8px auto;
               background-image: url('/original-tagline.png');
               background-size: contain;
               background-repeat: no-repeat;
               background-position: center;
-              border: 1px solid #e5e7eb;
-              border-radius: 8px;
             "
             title="Logo da Empresa"
           ></div>
@@ -943,24 +941,8 @@
             ? "dark"
             : "light";
 
-          let newSrc = companyConfig.logo[colorScheme];
-
-          // Se for dark mode, tentar primeiro o arquivo, se falhar usar base64
-          if (colorScheme === "dark") {
-            const testImg = new Image();
-            testImg.onload = function () {
-              logoElement.style.backgroundImage = `url('${newSrc}')`;
-              console.log("Logo carregou do Vercel:", newSrc);
-            };
-            testImg.onerror = function () {
-              logoElement.style.backgroundImage = `url('${companyConfig.logo.darkFallback}')`;
-              console.log("Usando fallback base64 para logo dark");
-            };
-            testImg.src = newSrc;
-          } else {
-            logoElement.style.backgroundImage = `url('${newSrc}')`;
-            console.log("Logo light carregada:", newSrc);
-          }
+          const newSrc = companyConfig.logo[colorScheme];
+          logoElement.style.backgroundImage = `url('${newSrc}')`;
         }
       }
 
